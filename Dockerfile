@@ -7,8 +7,8 @@ RUN mkdir -p /DeepSpeech /model /data/mcv2
 
 # Get MCV2 first as it takes circa 3 hours to download
 RUN cd /data \
-	&& wget https://voice-prod-bundler-ee1969a6ce8178826482b88e843c335139bd3fb4.s3.amazonaws.com/cv-corpus-1/en.tar.gz \
-	> /dev/null
+	&& wget -b -O /data/en.tar.gz \
+	https://voice-prod-bundler-ee1969a6ce8178826482b88e843c335139bd3fb4.s3.amazonaws.com/cv-corpus-1/en.tar.gz
 
 RUN cd /data && tar xvzf en.tar.gz
 
