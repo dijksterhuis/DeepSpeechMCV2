@@ -13,10 +13,6 @@ RUN git clone https://github.com/dijksterhuis/DeepSpeech /DeepSpeech
 RUN mkdir /DeepSpeech /model /data
 RUN git clone https://github.com/mozilla/DeepSpeech /DeepSpeech
 
-RUN cd /DeepSpeech \
-	&& git pull origin v0.5.0-alpha.10 \
-	&& git checkout v0.5.0-alpha.10
-
 RUN python3 -u \
 	/DeepSpeech/bin/import_cv2.py \
 	/data/
