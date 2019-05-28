@@ -1,31 +1,33 @@
 FROM tensorflow/tensorflow:latest-gpu-py3
 
+ENV MCV2_DIR=/data/mcv2
+ENV MODEL_DIR=/model
+ENV SRC_DIR=/DeepSpeech
+
 RUN apt update && apt upgrade -y
 RUN apt install -y git wget
 
-RUN mkdir -p /DeepSpeech /model /data/mcv2
+RUN mkdir -p ${SRC_DIR} \
+	&& mkdir -p ${MODEL_DIR} \
+	&& mkdir -p ${MCV2_DIR}
 
-RUN cd /data \
-        && wget -O /data/en.tar.gz \
-        https://voice-prod-bundler-ee1969a6ce8178826482b88e843c335139bd3fb4.s3.amazonaws.com/cv-corpus-1/en.tar.gz
+# Get MCV2 first as it takes circa 3 hours to download
+RUN wget -O ${MCV2_DIR}/en.tar.gz \
+	https://voice-prod-bundler-ee1969a6ce8178826482b88e843c335139bd3fb4.s3.amazonaws.com/cv-corpus-1/en.tar.gz
 
-RUN cd /data && tar xvzf en.tar.gz
+RUN cd ${MCV2_DIR} && tar xvzf en.tar.gz
 
-RUN git clone https://github.com/mozilla/DeepSpeech /DeepSpeech
-
-RUN cd /DeepSpeech \
-	&& git pull origin v0.5.0-alpha.10 \
-	&& git checkout v0.5.0-alpha.10
+RUN git clone https://github.com/mozilla/DeepSpeech ${SRC_DIR}
 
 RUN python3 -u \
-	/DeepSpeech/bin/import_cv2.py \
-	/data/mcv2/
+	${SRC_DIR}/bin/import_cv2.py \
+	${MCV2_DIR}
 
 RUN python3 \
 	/DeepSpeech/util/check_characters.py \
 	--csv-files \
-	/data/mcv2/test.tsv \
-	/data/mcv2/train.tsv \
-	/data/mcv2/dev.tsv > /model/alphabet.txt
+	${MCV2_DIR}/test.tsv \
+	${MCV2_DIR}/train.tsv \
+	${MCV2_DIR}/dev.tsv > ${MODEL_DIR}/alphabet.txt
 
 ENTRYPOINT /bin/bash
