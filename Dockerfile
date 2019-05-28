@@ -5,14 +5,13 @@ RUN apt install -y git wget
 
 RUN mkdir -p /DeepSpeech /model /data/mcv2
 
-
 # Get MCV2 first as it takes circa 3 hours to download
-RUN cd /data && wget https://voice-prod-bundler-ee1969a6ce8178826482b88e843c335139bd3fb4.s3.amazonaws.com/cv-corpus-1/en.tar.gz
+RUN cd /data \
+	&& wget https://voice-prod-bundler-ee1969a6ce8178826482b88e843c335139bd3fb4.s3.amazonaws.com/cv-corpus-1/en.tar.gz \
+	> /dev/null
+
 RUN cd /data && tar xvzf en.tar.gz
 
-RUN git clone https://github.com/dijksterhuis/DeepSpeech /DeepSpeech
-
-RUN mkdir /DeepSpeech /model /data
 RUN git clone https://github.com/mozilla/DeepSpeech /DeepSpeech
 
 RUN python3 -u \
