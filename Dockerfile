@@ -19,7 +19,7 @@ RUN cd ${MCV2_DIR} && tar xvzf en.tar.gz
 
 RUN git clone https://github.com/mozilla/DeepSpeech ${SRC_DIR}
 
-RUN apt install -y sox libsox-fmt-all libsox-fmt-mp3 libsox-fmt-wav
+RUN apt install -y sox libsox-fmt-all libsox-fmt-mp3
 RUN pip3 install -U -r ${SRC_DIR}/requirements.txt
 
 RUN python3 -u \
