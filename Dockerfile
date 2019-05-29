@@ -19,6 +19,8 @@ RUN cd ${MCV2_DIR} && tar xvzf en.tar.gz
 
 RUN git clone https://github.com/mozilla/DeepSpeech ${SRC_DIR}
 
+RUN pip3 install -U ${SRC_DIR}/requirements.txt
+
 RUN python3 -u \
 	${SRC_DIR}/bin/import_cv2.py \
 	${MCV2_DIR}
